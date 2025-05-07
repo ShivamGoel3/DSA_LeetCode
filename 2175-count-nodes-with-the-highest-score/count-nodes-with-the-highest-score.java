@@ -1,25 +1,17 @@
 class Solution {
-    int updatechildcount(int node, ArrayList<ArrayList<Integer>> adj, int[] dp) {
-        int count = adj.get(node).size();
-        for (Integer i : adj.get(node)) {
-            count += updatechildcount(i, adj, dp);
-        }
-        dp[node] = count;
-        return count;
-    }
-
     long maxscore = -1;
     int ans = 0;
 
-    void dfs(int node, ArrayList<ArrayList<Integer>> adj, int[] dp, int n) {
-        int sumChildNode = dp[node];
+    int dfs(int node, ArrayList<ArrayList<Integer>> adj, int n) {
+        int childnode = adj.get(node).size();
         long score = 1;
         for (Integer i : adj.get(node)) {
-            dfs(i, adj, dp, n);
+            int count = dfs(i, adj, n);
+            childnode += count;
             // System.out
-            score *= (dp[i] + 1);
+            score *= (count + 1);
         }
-        int leftNode = n - sumChildNode - 1;
+        int leftNode = n - childnode - 1;
         if (leftNode > 0)
             score *= leftNode;
         // System.out.println(node + " " + leftNode + " " + score);
@@ -29,6 +21,7 @@ class Solution {
             ans++;
             maxscore = score;
         }
+        return childnode;
     }
 
     public int countHighestScoreNodes(int[] parents) {
@@ -38,7 +31,6 @@ class Solution {
             adj.add(new ArrayList<>());
         }
         int head = 0;
-        int[] dp = new int[n];
         for (int i = 0; i < n; i++) {
             if (parents[i] == -1) {
                 head = i;
@@ -46,12 +38,8 @@ class Solution {
             }
             adj.get(parents[i]).add(i);
         }
-        updatechildcount(head, adj, dp);
-        // for(int i=0;i<n;i++){
-        //     System.out.print(dp[i]+" ");
-        // }
 
-        dfs(head, adj, dp, n);
+        dfs(head, adj, n);
         // System.out.println(ans);
         return ans;
     }
