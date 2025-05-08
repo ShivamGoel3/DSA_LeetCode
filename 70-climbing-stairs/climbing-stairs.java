@@ -1,20 +1,17 @@
 class Solution {
-    int calldp(int n, int[] dp) {
-        if (n < 3)
-            return n;
-        if (dp[n] != 0)
+    int call(int n, int[] dp) {
+        if (dp[n] != -1)
             return dp[n];
-        dp[n] =  calldp(n - 1, dp) + calldp(n - 2, dp);
-        return dp[n];
+        if (n <= 2)
+            return dp[n] = n;
+
+        return dp[n] = call(n - 1, dp) + call(n - 2, dp);
     }
 
     public int climbStairs(int n) {
-        if(n<3)
-        return n;
         int[] dp = new int[n + 1];
-        dp[0] = 0;
-        dp[1] = 1;
-        dp[2] = 2;
-        return calldp(n, dp);
+        for (int i = 0; i <= n; i++)
+            dp[i] = -1;
+        return call(n, dp);
     }
 }
