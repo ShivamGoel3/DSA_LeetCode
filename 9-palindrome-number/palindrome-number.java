@@ -2,15 +2,14 @@ class Solution {
     public boolean isPalindrome(int x) {
         if (x < 0)
             return false;
-        ArrayList<Integer> s = new ArrayList<>();
+        int num1 = 0;
+        int num2 = x;
         while (x > 0) {
-            s.add(x % 10);
+            int a = x % 10;
             x /= 10;
+            num1 *= 10;
+            num1 += a;
         }
-        for (int i = 0; i < s.size(); i++) {
-            if (s.get(i) != s.get(s.size() - i - 1))
-                return false;
-        }
-        return true;
+        return num1 == num2;
     }
 }
