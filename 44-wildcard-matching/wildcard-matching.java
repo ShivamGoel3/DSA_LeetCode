@@ -1,43 +1,25 @@
 class Solution {
-    int call(String s, String p, int i, int j, int[][] dp) {
-        if (i == 0 && j == 0)
-            return 1;
-        if (j == 0)
-            return 0;
-        if (i == 0) {
-            int k = j;
-            while (k > 0) {
-                if (p.charAt(k - 1) != '*')
-                    return 0;
-                k--;
-            }
-            return 1;
-        }
-        if (dp[i][j] != -1)
-            return dp[i][j];
-        if (s.charAt(i - 1) == p.charAt(j - 1)) {
-            return dp[i][j] = call(s, p, i - 1, j - 1, dp);
-        } else {
-            if (p.charAt(j - 1) == '?')
-                return dp[i][j] = call(s, p, i - 1, j - 1, dp);
-            else if (p.charAt(j - 1) == '*') {
-                int a = call(s, p, i - 1, j, dp);
-                int b = call(s, p, i, j - 1, dp);
-                // if(a==1 || b==1)
-                return dp[i][j] = a | b;
-            } else
-                return dp[i][j] = 0;
-        }
-    }
-
     public boolean isMatch(String s, String p) {
         int n = s.length(), m = p.length();
-        int[][] dp = new int[n + 1][m + 1];
-        for (int i = 0; i <= n; i++) {
-            for (int j = 0; j <= m; j++) {
-                dp[i][j] = -1;
+        boolean[][] dp = new boolean[n + 1][m + 1];
+        dp[0][0] = true;
+        boolean check = true;
+        for (int i = 1; i <= m; i++) {
+            if (check && p.charAt(i - 1) != '*')
+                check = false;
+            dp[0][i] = check;
+            // System.out.print(dp[0][i] + " ");
+        }
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                if (s.charAt(i - 1) == p.charAt(j - 1) || p.charAt(j - 1) == '?')
+                    dp[i][j] = dp[i - 1][j - 1];
+                else if (p.charAt(j - 1) == '*')
+                    dp[i][j] = dp[i - 1][j] || dp[i][j - 1];
+                else
+                    dp[i][j] = false;
             }
         }
-        return call(s, p, n, m, dp) == 1;
+        return dp[n][m];
     }
 }
