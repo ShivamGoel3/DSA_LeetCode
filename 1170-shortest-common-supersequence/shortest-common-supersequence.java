@@ -11,49 +11,31 @@ class Solution {
                 }
             }
         }
-        // int count = dp[n][m];
-        // String ans = "";
-        HashSet<Integer> set = new HashSet<>();
         StringBuilder s = new StringBuilder();
         int i = n, j = m;
         while (i > 0 && j > 0) {
             if (s1.charAt(i - 1) == s2.charAt(j - 1)) {
-                set.add(j - 1);
+                s.append(s2.charAt(j - 1));
                 // ans = s1.charAt(i-1) + ans;
                 i--;
                 j--;
-            } else if (dp[i - 1][j] > dp[i][j - 1])
+            } else if (dp[i - 1][j] > dp[i][j - 1]) {
+                s.append(s1.charAt(i - 1));
                 i--;
-            else
+            } else {
+                s.append(s2.charAt(j - 1));
                 j--;
+            }
 
         }
-        i = 0;
-        j = 0;
-        // System.out.println(set);
-        while (i < n && j < m) {
-            if (set.contains(j)) {
-                if (s1.charAt(i) == s2.charAt(j)) {
-                    s.append(s2.charAt(j));
-                    j++;
-                    i++;
-                } else {
-                    s.append(s1.charAt(i));
-                    i++;
-                }
-            } else {
-                s.append(s2.charAt(j));
-                j++;
-            }
+        while (i > 0) {
+            s.append(s1.charAt(i - 1));
+            i--;
         }
-        while (i < n) {
-            s.append(s1.charAt(i));
-            i++;
+        while (j > 0) {
+            s.append(s2.charAt(j - 1));
+            j--;
         }
-        while (j < m) {
-            s.append(s2.charAt(j));
-            j++;
-        }
-        return s.toString();
+        return s.reverse().toString();
     }
 }
