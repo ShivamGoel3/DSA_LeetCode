@@ -1,31 +1,26 @@
 class Solution {
-    int call(int[] prices, int index, int buy, int count, int[][][] dp, int max) {
-        if (index >= prices.length)
-            return 0;
-        if (count >= max)
-            return 0;
-        if (dp[index][buy][count] != -1)
-            return dp[index][buy][count];
-        if (buy == 0) {
-            int a = call(prices, index + 1, buy, count, dp, max);
-            int b = -prices[index] + call(prices, index + 1, 1 - buy, count, dp, max);
-            return dp[index][buy][count] = Math.max(a, b);
-        } else {
-            int a = call(prices, index + 1, buy, count, dp, max);
-            int b = prices[index] + call(prices, index + 1, 1 - buy, count + 1, dp, max);
-            return dp[index][buy][count] = Math.max(a, b);
-        }
-    }
-
     public int maxProfit(int k, int[] prices) {
-        int[][][] dp = new int[prices.length][2][k];
-        for (int i = 0; i < prices.length; i++) {
+        int n = prices.length;
+        int ans = 0;
+        int[][][] dp = new int[n + 1][2][k + 1];
+        for (int i = n - 1; i >= 0; i--) {
             for (int j = 0; j <= 1; j++) {
-                for (int l = 0; l < k; l++) {
-                    dp[i][j][l] = -1;
+                for (int l = 1; l <= k; l++) {
+                    int profit = 0;
+                    if (j == 0) {
+                        profit = Math.max(dp[i + 1][0][l], -prices[i] + dp[i + 1][1][l]);
+                    }
+                    if (j == 1) {
+                        profit = Math.max(dp[i + 1][1][l], prices[i] + dp[i + 1][0][l - 1]);
+                    }
+                    dp[i][j][l] = profit;
+                    if (j == 0 && i == 0) {
+                        ans = dp[i][j][l];
+                    }
                 }
             }
         }
-        return call(prices, 0, 0, 0, dp, k);
+
+        return ans;
     }
 }
