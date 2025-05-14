@@ -8,14 +8,13 @@ class Solution {
             sum1 += cardPoints[i];
         }
         ans = sum1;
-        int sum2 = 0;
         int i = k - 1, j = n - 1;
         while (i >= 0) {
             sum1 -= cardPoints[i];
-            sum2 += cardPoints[j];
+            sum1 += cardPoints[j];
             i--;
             j--;
-            ans = Math.max(ans, sum1 + sum2);
+            ans = Math.max(ans, sum1);
         }
         return ans;
     }
