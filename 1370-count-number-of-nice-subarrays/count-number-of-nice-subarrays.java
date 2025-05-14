@@ -1,18 +1,24 @@
 class Solution {
-    public int numberOfSubarrays(int[] nums, int k) {
+    int call(int[] nums, int k) {
         int prefix = 0;
-        HashMap<Integer, Integer> m = new HashMap<>();
+        int start = 0;
         int ans = 0;
         for (int i = 0; i < nums.length; i++) {
             if (nums[i] % 2 == 1)
                 prefix++;
-            if (prefix == k)
-                ans++;
-            if (m.containsKey(prefix-k))
-                ans += m.get(prefix-k);
-            m.put(prefix, m.getOrDefault(prefix, 0) + 1);
+            while (prefix > k) {
+                prefix -= nums[start] % 2;
+                start++;
+            }
+            //System.out.print(i + " " + start + " - ");
+            ans += i - start + 1;
         }
+        //System.out.println(ans);
         return ans;
+    }
+
+    public int numberOfSubarrays(int[] nums, int k) {
+        return call(nums, k) - call(nums, k - 1);
 
     }
 }
