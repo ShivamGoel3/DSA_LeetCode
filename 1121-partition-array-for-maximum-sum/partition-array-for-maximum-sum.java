@@ -16,12 +16,17 @@ class Solution {
 
     public int maxSumAfterPartitioning(int[] arr, int k) {
         int n = arr.length;
-        int[][] dp = new int[n][n];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                dp[i][j] = -1;
+        int[] dp = new int[n + 1];
+        for (int i = n - 1; i >= 0; i--) {
+            int a = 0;
+            int ans = 0;
+            for (int j = i; j < n && j - i + 1 <= k; j++) {
+                a = Math.max(a, arr[j]);
+                ans = Math.max(ans,
+                        (j - i + 1) * a + dp[j + 1]);
             }
+            dp[i] = ans;
         }
-        return call(arr, 0, n - 1, k, dp);
+        return dp[0];
     }
 }
