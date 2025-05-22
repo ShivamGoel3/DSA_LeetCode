@@ -5,9 +5,8 @@ class Solution {
         for (int i = 0; i < expression.length(); i++) {
             char ch = expression.charAt(i);
             if (ch == ')') {
-                int r1 = s.peek() == 't' ? 1 : 0;
-                int r2 = r1;
-                s.pop();
+                int r1 = 0;
+                int r2 = 1;
                 while (s.peek() != '(') {
                     int a = s.peek() == 't' ? 1 : 0;
                     r1 |= a;
@@ -24,7 +23,6 @@ class Solution {
                 } else {
                     s.push(r1 == 1 ? 't' : 'f');
                 }
-                // s.pop();
             } else {
                 if (ch != ',')
                     s.push(ch);
