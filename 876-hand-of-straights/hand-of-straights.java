@@ -4,19 +4,20 @@ class Solution {
         for (int i = 0; i < hand.length; i++) {
             m.put(hand[i], m.getOrDefault(hand[i], 0) + 1);
         }
-        Arrays.sort(hand);
+
         for (int i = 0; i < hand.length; i++) {
-            if (m.containsKey(hand[i]) == false)
-                continue;
-            int k = 0;
-            while (k < groupSize) {
-                if (m.containsKey(hand[i] + k)) {
-                    m.put(hand[i] + k, m.get(hand[i] + k) - 1);
-                    if (m.get(hand[i] + k) == 0)
-                        m.remove(hand[i] + k);
-                } else
-                    return false;
-                k++;
+            int startcard = hand[i];
+            while (m.getOrDefault(startcard, 0) > 0)
+                startcard--;
+            while (startcard <= hand[i]) {
+                while (m.getOrDefault(startcard, 0) > 0) {
+                    for (int j = startcard; j < startcard + groupSize; j++) {
+                        if (m.getOrDefault(j, 0) == 0)
+                            return false;
+                        m.put(j, m.get(j) - 1);
+                    }
+                }
+                startcard++;
             }
         }
         return true;
