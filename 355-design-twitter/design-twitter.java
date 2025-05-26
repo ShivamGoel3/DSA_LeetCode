@@ -1,28 +1,43 @@
 class Twitter {
-    ArrayList<HashSet<Integer>> arr = new ArrayList<>();
-    ArrayList<int[]> q = new ArrayList<>();
+    ArrayList<HashSet<Integer>> flist = new ArrayList<>();
+    ArrayList<ArrayList<int[]>> tlist = new ArrayList<>();
+    int count = 0;
 
     public Twitter() {
         for (int i = 0; i <= 500; i++) {
-            arr.add(new HashSet<>());
+            flist.add(new HashSet<>());
+            tlist.add(new ArrayList<>());
         }
     }
 
     public void postTweet(int userId, int tweetId) {
-        q.add(new int[] { userId, tweetId });
+        tlist.get(userId).add(new int[] { tweetId, count });
+        count++;
     }
 
     public List<Integer> getNewsFeed(int userId) {
-        List<Integer> ans = new ArrayList<>();
-        int count = 0;
-        int i = q.size() - 1;
-        while (i >= 0 && count < 10) {
-            int[] a = q.get(i);
-            i--;
-            if (a[0] == userId || arr.get(userId).contains(a[0])) {
-                ans.add(a[1]);
-                count++;
+        PriorityQueue<int[]> q = new PriorityQueue<>(new Comparator<>() {
+            public int compare(int[] a, int[] b) {
+                return b[1] - a[1];
             }
+        });
+        List<Integer> ans = new ArrayList<>();
+        for (int i = 0; i < tlist.get(userId).size(); i++) {
+            q.add(new int[] { tlist.get(userId).get(i)[0], tlist.get(userId).get(i)[1] });
+        }
+        for (Integer i : flist.get(userId)) {
+            for (int j = 0; j < tlist.get(i).size(); j++) {
+                q.add(new int[] { tlist.get(i).get(j)[0], tlist.get(i).get(j)[1] });
+            }
+        }
+        int count = 0;
+
+        while (q.size() > 0 && count < 10) {
+            int[] a = q.poll();
+            // if (a[0] == userId || arr.get(userId).contains(a[0])) {
+            ans.add(a[0]);
+            count++;
+            // }
         }
         // while (b.size() > 0) {
         //     q.add(b.poll());
@@ -31,11 +46,11 @@ class Twitter {
     }
 
     public void follow(int followerId, int followeeId) {
-        arr.get(followerId).add(followeeId);
+        flist.get(followerId).add(followeeId);
     }
 
     public void unfollow(int followerId, int followeeId) {
-        arr.get(followerId).remove(followeeId);
+        flist.get(followerId).remove(followeeId);
     }
 }
 
