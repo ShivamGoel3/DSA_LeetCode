@@ -9,14 +9,17 @@
  * }
  */
 class Solution {
+    ListNode call(ListNode root) {
+        if (root == null || root.next == null)
+            return root;
+        ListNode a = call(root.next);
+        ListNode b = root.next;
+        b.next = root;
+        root.next = null;
+        return a;
+    }
+
     public ListNode reverseList(ListNode head) {
-        ListNode curr = head,nex = null, prev = null;
-        while(curr!=null){
-            nex = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = nex;
-        }
-        return prev;
+        return call(head);
     }
 }
