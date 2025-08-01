@@ -1,20 +1,30 @@
 class Solution {
     public boolean isPalindrome(String st) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < st.length(); i++) {
-            if ((st.charAt(i) >= 'a' && st.charAt(i) <= 'z') || (st.charAt(i) >= '0' && st.charAt(i) <= '9'))
-                sb.append(st.charAt(i));
-            else if ((st.charAt(i) >= 'A' && st.charAt(i) <= 'Z'))
+        int i = 0, j = st.length() - 1;
+        while (i < j) {
+            if (!((st.charAt(i) >= 'a' && st.charAt(i) <= 'z') || (st.charAt(i) >= '0' && st.charAt(i) <= '9')
+                    || (st.charAt(i) >= 'A' && st.charAt(i) <= 'Z')))
+                i++;
+            else if (!((st.charAt(j) >= 'a' && st.charAt(j) <= 'z') || (st.charAt(j) >= '0' && st.charAt(j) <= '9')
+                    || (st.charAt(j) >= 'A' && st.charAt(j) <= 'Z')))
+                j--;
+            else {
+                char x = st.charAt(i);
+                char y = st.charAt(j);
+                if (x >= 'A' && x <= 'Z') {
+                    x = (char) (x + 32);
+                }
+                if (y >= 'A' && y <= 'Z') {
+                    y = (char) (y + 32);
+                }
+                if (x != y)
+                    return false;
+                i++;
+                j--;
+            }
 
-                sb.append((char) (st.charAt(i) + 32));
         }
-        String s = sb.toString();
-        System.out.print(s);
 
-        for (int i = 0; i < s.length() / 2; i++) {
-            if (s.charAt(i) != s.charAt(s.length() - i - 1))
-                return false;
-        }
         return true;
     }
 }
