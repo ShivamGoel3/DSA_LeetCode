@@ -1,16 +1,17 @@
 class Solution {
     void call(int[] candidates, int target, List<List<Integer>> ans,
             List<Integer> t, int sum, int index) {
-        if (sum >= target) {
+        if (sum >= target || index == candidates.length) {
             if (sum == target)
                 ans.add(new ArrayList<>(t));
             return;
         }
-        for (int i = index; i < candidates.length; i++) {
-            t.add(candidates[i]);
-            call(candidates, target, ans, t, sum + candidates[i], i);
-            t.remove(t.size() - 1);
-        }
+        // for (int i = index; i < candidates.length; i++) {
+        call(candidates, target, ans, t, sum, index + 1);
+        t.add(candidates[index]);
+        call(candidates, target, ans, t, sum + candidates[index], index);
+        t.remove(t.size() - 1);
+        // }
     }
 
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
