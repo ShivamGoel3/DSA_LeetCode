@@ -1,13 +1,14 @@
 class Solution {
-    void call(String digits, List<String> ans, String a, int index,
-            HashMap<Character, String> m) {
+    void call(List<String> ans, String digits, HashMap<Character, String> m, int index,
+            String s) {
         if (index == digits.length()) {
-            ans.add(a);
+            ans.add(s);
             return;
         }
-        String w = m.get(digits.charAt(index));
-        for (int i = 0; i < w.length(); i++) {
-            call(digits, ans, a + w.charAt(i), index + 1, m);
+
+        String g = m.get(digits.charAt(index));
+        for (int j = 0; j < g.length(); j++) {
+            call(ans, digits, m, index + 1, s + g.charAt(j));
         }
 
     }
@@ -25,7 +26,8 @@ class Solution {
         List<String> ans = new ArrayList<>();
         if (digits.length() == 0)
             return ans;
-        call(digits, ans, "", 0, m);
+        int index = 0;
+        call(ans, digits, m, index, "");
         return ans;
     }
 }
