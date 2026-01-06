@@ -1,30 +1,22 @@
 class Solution {
-    public boolean isPalindrome(String st) {
-        int i = 0, j = st.length() - 1;
-        while (i < j) {
-            if (!((st.charAt(i) >= 'a' && st.charAt(i) <= 'z') || (st.charAt(i) >= '0' && st.charAt(i) <= '9')
-                    || (st.charAt(i) >= 'A' && st.charAt(i) <= 'Z')))
-                i++;
-            else if (!((st.charAt(j) >= 'a' && st.charAt(j) <= 'z') || (st.charAt(j) >= '0' && st.charAt(j) <= '9')
-                    || (st.charAt(j) >= 'A' && st.charAt(j) <= 'Z')))
-                j--;
-            else {
-                char x = st.charAt(i);
-                char y = st.charAt(j);
-                if (x >= 'A' && x <= 'Z') {
-                    x = (char) (x + 32);
-                }
-                if (y >= 'A' && y <= 'Z') {
-                    y = (char) (y + 32);
-                }
-                if (x != y)
-                    return false;
-                i++;
-                j--;
+    public boolean isPalindrome(String s) {
+        StringBuilder str = new StringBuilder();
+        for (int k = 0; k < s.length(); k++) {
+            if (s.charAt(k) >= 97 && s.charAt(k) <= 122) {
+                str.append(s.charAt(k));
+            } else if (s.charAt(k) >= 65 && s.charAt(k) <= 90) {
+                str.append((char) (s.charAt(k) + 32));
+            } else if (s.charAt(k) >= 48 && s.charAt(k) <= 57) {
+                str.append(s.charAt(k));
             }
-
         }
-
+        int i = 0, j = str.length() - 1;
+        while (i < j) {
+            if (str.charAt(i) != str.charAt(j))
+                return false;
+            i++;
+            j--;
+        }
         return true;
     }
 }
