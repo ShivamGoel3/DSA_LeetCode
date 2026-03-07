@@ -1,0 +1,2 @@
+# Write your MySQL query statement below
+select activity_date as day , count(*) as active_users  from (select * from activity group by activity_date,user_id ) as t group by t.activity_date having t.activity_date between '2019-06-28' and '2019-07-27'
