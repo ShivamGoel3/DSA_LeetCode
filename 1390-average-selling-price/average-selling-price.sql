@@ -1,0 +1,2 @@
+# Write your MySQL query statement below
+select f.product_id,ifnull(y.average_price,0) as average_price from (select distinct product_id from prices p) as f left join (select t.product_id , round(sum(sums)/sum(units),2) as average_price from (select prices.product_id, units, price * units as sums from prices join UnitsSold on prices.product_id = UnitsSold.product_id and purchase_date between start_date and end_date) as t group by t.product_id ) as y on f.product_id = y.product_id
