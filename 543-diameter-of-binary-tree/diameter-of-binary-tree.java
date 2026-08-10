@@ -25,6 +25,7 @@ class Solution {
 
     public int diameterOfBinaryTree(TreeNode root) {
         int[] ans = new int[1];
+        ans[0] = 0;
         call(root, ans);
         return ans[0];
     }
