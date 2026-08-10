@@ -14,17 +14,21 @@
  * }
  */
 class Solution {
+    boolean check = true;
+
     int call(TreeNode root) {
         if (root == null)
             return 0;
         int a = call(root.left);
         int b = call(root.right);
-        if (a == -1 || b == -1 || Math.abs(a - b) > 1)
-            return -1;
+        if (Math.abs(a-b) > 1)
+            check = false;
         return Math.max(a, b) + 1;
     }
 
     public boolean isBalanced(TreeNode root) {
-        return call(root) >= 0 ? true : false;
+        check = true;
+        call(root);
+        return check;
     }
 }
