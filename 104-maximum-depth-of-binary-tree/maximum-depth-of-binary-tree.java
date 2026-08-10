@@ -14,17 +14,16 @@
  * }
  */
 class Solution {
-    void call(TreeNode root, int l, int[] ans) {
+    int call(TreeNode root) {
         if (root == null)
-            return;
-        ans[0] = Math.max(l, ans[0]);
-        call(root.left, l + 1, ans);
-        call(root.right, l + 1, ans);
+            return 0;
+        int a = call(root.left);
+        int b = call(root.right);
+        return Math.max(a, b) + 1;
     }
 
     public int maxDepth(TreeNode root) {
-        int[] ans = new int[1];
-        call(root, 1, ans);
-        return ans[0];
+
+        return call(root);
     }
 }
